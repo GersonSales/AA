@@ -1,0 +1,10 @@
+import math
+
+
+
+def mudularPower(base, power, module):
+    if (power == 0):
+        return 1
+    return 1
+
+print (math.floor(1.4))
