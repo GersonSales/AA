@@ -4,48 +4,52 @@ def crivo(limit):
     primes[1] = False
 
     for i in xrange(2, limit):
-        for j in xrange(i*i, limit, i):
-            primes[j] = False
-
+        if (primes[i]):
+            for j in xrange(i * 2, limit, i):
+                primes[j] = False
     return primes
-primes = crivo(10**6)
+
+primes = crivo(10**5 + 100)
 n, m = map(int, raw_input().split())
 
 matrix = []
-matrixTouse = []
-transpMatrxToUse = []
-transpMatrx = []
 for i in xrange(n):
-    newLine = map(int, raw_input().split())
-    matrix.append(newLine)
-    matrixTouse.append(matrix[i])
-
-    if (len(transpMatrx) == 0):
-        for j in xrange(len(newLine)):
-            transpMatrx.append([newLine[j]])
-    else:
-        for j in xrange(len(newLine)):
-            transpMatrx[j].append(newLine[j])
-    transpMatrxToUse.append(transpMatrx[i])
+    matrix.append(map(int, raw_input().split()))
 
 attempts = []
-for  i in xrange(len(matrixTouse)):
-    count = 0
-    for j in xrange(len(matrixTouse[i])):
-        while (not primes[matrixTouse[i][j]]):
-                matrixTouse[i][j] += 1
+
+dic = {}
+
+for i in xrange(n):
+    moves = 0
+    for j in xrange(m):
+        elem = matrix[i][j]
+        bckp = matrix[i][j]
+        count = 0
+        if (bckp in dic):
+            count = dic[bckp]
+        else:
+            while (not primes[elem]):
+                    elem += 1
+                    count += 1
+            dic[bckp] = count
+        moves += count
+    attempts.append(moves)
+
+
+for i in xrange(m):
+    moves = 0
+    for j in xrange(n):
+        elem = matrix[j][i]
+        bckp = matrix[j][i]
+        count = 0
+        if (bckp in dic):
+            count = dic[bckp]
+        else:
+            while (not primes[elem]):
+                elem += 1
                 count += 1
-    attempts.append(count)
-    matrixTouse[i] = matrix[i]
-
-for  i in xrange(len(transpMatrxToUse)):
-    count = 0
-    for j in xrange(len(transpMatrxToUse[i])):
-        while (not primes[transpMatrxToUse[i][j]]):
-            transpMatrxToUse[i][j] += 1
-            count += 1
-
-    attempts.append(count)
-    transpMatrxToUse[i] = transpMatrx[i]
-
+            dic[bckp] = count
+        moves += count
+    attempts.append(moves)
 print min(attempts)

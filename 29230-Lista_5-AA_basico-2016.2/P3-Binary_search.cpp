@@ -1,12 +1,15 @@
 #include<stdio.h>
 
-int binarySearch(int *array, int element, int right) {
+int binarySearch(long int *array, long int element, long int right) {
     int left = 0;
+    int backup = -1;
 
     while (left <= right) {
-        int middle = (left + right) / 2;
+        int middle = left + (right - left) / 2;
+
         if(array[middle] == element) {
-            return middle;
+            backup = middle;
+            right = middle -1;
         } else {
             if (array[middle] < element) {
                 left = middle + 1;
@@ -15,26 +18,34 @@ int binarySearch(int *array, int element, int right) {
             }
         }
     }
-
-    return -1;
+    return backup;
 }
 
 int main() {
-    int n, q;
+    long int n, q, result;
 
-    scanf("%d %d", &n, &q);
+    scanf("%ld %ld", &n, &q);
+    long int array [100000], results[500000];
 
-    int array [n];
 
-
+    int count = 0;
     for (int i = 0; i < n; i++){
-        scanf("%d", &array[i]);
+        long long int number;
+        scanf("%lli", &number);
+        if (number < 0){
+            count++;
+        }
+        array[i] = number;
     }
 
-    int element;
-    for (int i = 0; i < q; i++){
-        scanf ("%d", &element);
-        printf("%d\n", binarySearch(array, element, n));
+
+    long long int element;
+    for (int i = 0; i < q; i++) {
+        scanf ("%li", &results[i]);
+    }
+    for (int i = 0; i < q; i ++) {
+        result = binarySearch(array, results[i], n);
+        printf("%ld\n", result);
     }
     return 0;
 }
