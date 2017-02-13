@@ -1,22 +1,112 @@
-n = int(raw_input())
+import string
+class Stack:
+    def __init__(self):
+        self.items = []
 
-operators = "-+*/^"
+    def isEmpty(self):
+        return self.items == []
 
-for i in xrange(n):
-    expression = list(raw_input())
-    
-    index = 0;
+    def push(self, item):
+        self.items.append(item)
 
-    while index < len(expression):
-        if (expression[index] in operators):
-            aux = expression[index]
-            expression[index] = expression[index + 1]
-            expression[index + 1] = aux
-            index += 1
-        elif(expression[index] in "()[]{}"):
-            del expression[index]
-            index -= 1
+    def pop(self):
+        return self.items.pop()
 
-        index += 1
+    def peek(self):
+        return self.items[len(self.items) - 1]
 
-    print "".join(expression)
+    def size(self):
+        return len(self.items)
+
+    def __str__(self):
+        return str(self.items)
+
+
+
+
+def infixToPostfix(expression = ""):
+    expression = "".join(expression.split())
+    priority = {"^": 3, "*": 2, "/": 2, "+": 1, "-": 1}
+    symbols = string.ascii_uppercase
+    symbols += string.ascii_lowercase
+    symbols += string.digits
+
+    stack = Stack()
+    postfix = []
+
+    for term in expression:
+
+        if (term in symbols):
+            postfix.append(term)
+        elif (priority.has_key(term)):
+            if (stack.isEmpty()):
+                stack.push(term)
+            else:
+                peek = stack.peek()
+                if (priority.has_key(peek)):
+                    if (priority[term] > priority[peek]):
+                        stack.push(term)
+                    else:
+                        postfix.append(stack.pop())
+                        peek = stack.peek()
+                        while (priority.has_key(peek) and priority[term] <= priority[peek]):
+                            postfix.append(stack.pop())
+                            peek = stack.peek()
+
+                        stack.push(term)
+                else:
+                    stack.push(term)
+
+        else:
+            if (term == "("):
+                stack.push(term)
+            elif (term == ")"):
+                peek = stack.peek()
+                while (peek != "("):
+                    postfix.append(stack.pop())
+                    peek = stack.peek()
+                if (peek == "("):
+                    stack.pop()
+    return "".join(postfix)
+
+
+for i in xrange(int(raw_input())):
+    print infixToPostfix("(" + raw_input() + ")")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

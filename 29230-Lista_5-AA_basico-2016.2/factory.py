@@ -1,14 +1,16 @@
 import random
 import string
 
+nFavourites = random.ranrange(27)
 favourites = ""
-for i in xrange(1, random.randrange(27)):
+
+for i in xrange(1, nFavourites):
     letter = random.choice(string.ascii_lowercase)
     if (not letter in favourites):
         favourites += letter
 nameSize = 10**5
 operations = 10**5
-print "%d %d %d" %(26, nameSize, operations)
+print "%d %d %d" %(nFavourites, nameSize, operations)
 print favourites
 
 name = ""
