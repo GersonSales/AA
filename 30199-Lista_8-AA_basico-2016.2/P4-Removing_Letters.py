@@ -1,21 +1,21 @@
 #https://www.urionlinejudge.com.br/judge/en/problems/view/1556
-from itertools import chain, combinations
 
 
-
-def powerset(iterable):
-    s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
-
+def powerset(s):
+    x = len(s)
+    result = []
+    for i in range(1 << x):
+        result.append([s[j] for j in range(x) if (i & (1 << j))])
+    return result
 
 string = raw_input()
-combinations = list(map(''.join, powerset(string)))
+combinationss = list(map(''.join, powerset(string)))
 
-result = []#set()
+result = set()
 
-for comb in  combinations:
-    if (comb in string and comb != ""):
-        result.append(comb)
+for comb in  combinationss:
+    if (comb != ""):
+        result.add(comb)
 
 result = list(result)
 result.sort()
